@@ -34,9 +34,9 @@ export default class TutorialsList extends Component {
       let data = item.val();
       tutorials.push({
         key: key,
-        title: data.title,
-        description: data.description,
-        published: data.published,
+        Name: data.Name,
+        Description: data.Description,
+        // published: data.published,
       });
     });
 
@@ -88,7 +88,7 @@ export default class TutorialsList extends Component {
                   onClick={() => this.setActiveTutorial(tutorial, index)}
                   key={index}
                 >
-                  {tutorial.title}
+                  {tutorial.Name}
                 </li>
               ))}
           </ul>
@@ -109,7 +109,7 @@ export default class TutorialsList extends Component {
           ) : (
             <div>
               <br />
-              <p>Please click on a Tutorial...</p>
+              <p>Please click Legal Aid...</p>
             </div>
           )}
         </div>

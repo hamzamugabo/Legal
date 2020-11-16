@@ -4,7 +4,11 @@ import TutorialDataService from "../services/tutorial.service";
 export default class Tutorial extends Component {
   constructor(props) {
     super(props);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.onChangeTellphone = this.onChangeTellphone.bind(this);
+    this.onChangeAddress = this.onChangeAddress.bind(this);
+    this.onChangeDistrict = this.onChangeDistrict.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.updatePublished = this.updatePublished.bind(this);
     this.updateTutorial = this.updateTutorial.bind(this);
@@ -13,8 +17,14 @@ export default class Tutorial extends Component {
     this.state = {
       currentTutorial: {
         key: null,
-        title: "",
-        description: "",
+        Description: "" ,
+        Email: "",
+        Name:'',
+        Logo:'',
+        District:'',
+        Address: "",
+        Tellphone: "",
+        confirm_agreement: false,
         published: false,
       },
       message: "",
@@ -39,26 +49,74 @@ export default class Tutorial extends Component {
     });
   }
 
-  onChangeTitle(e) {
-    const title = e.target.value;
+  onChangeName(e) {
+    const Name = e.target.value;
 
     this.setState(function (prevState) {
       return {
         currentTutorial: {
           ...prevState.currentTutorial,
-          title: title,
+          Name: Name,
+        },
+      };
+    });
+  }
+  onChangeEmail(e) {
+    const Email = e.target.value;
+
+    this.setState(function (prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          Email: Email,
+        },
+      };
+    });
+  }
+  onChangeTellphone(e) {
+    const Tellphone = e.target.value;
+
+    this.setState(function (prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          Tellphone: Tellphone,
+        },
+      };
+    });
+  }
+  onChangeDistrict(e) {
+    const District = e.target.value;
+
+    this.setState(function (prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          District: District,
+        },
+      };
+    });
+  }
+  onChangeAddress(e) {
+    const Address = e.target.value;
+
+    this.setState(function (prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          Address: Address,
         },
       };
     });
   }
 
   onChangeDescription(e) {
-    const description = e.target.value;
+    const Description = e.target.value;
 
     this.setState((prevState) => ({
       currentTutorial: {
         ...prevState.currentTutorial,
-        description: description,
+        Description: Description,
       },
     }));
   }
@@ -83,14 +141,18 @@ export default class Tutorial extends Component {
 
   updateTutorial() {
     const data = {
-      title: this.state.currentTutorial.title,
-      description: this.state.currentTutorial.description,
+      Name: this.state.currentTutorial.Name,
+      Email: this.state.currentTutorial.Email,
+      Tellphone: this.state.currentTutorial.Tellphone,
+      District: this.state.currentTutorial.District,
+      Address: this.state.currentTutorial.Address,
+      Description: this.state.currentTutorial.Description,
     };
 
     TutorialDataService.update(this.state.currentTutorial.key, data)
       .then(() => {
         this.setState({
-          message: "The tutorial was updated successfully!",
+          message: "updated successfully!",
         });
       })
       .catch((e) => {
@@ -113,27 +175,69 @@ export default class Tutorial extends Component {
 
     return (
       <div>
-        <h4>Tutorial</h4>
+        <h4>
+          Legal Aid
+        </h4>
         {currentTutorial ? (
           <div className="edit-form">
             <form>
               <div className="form-group">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="Name">Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="title"
-                  value={currentTutorial.title}
-                  onChange={this.onChangeTitle}
+                  id="Name"
+                  value={currentTutorial.Name}
+                  onChange={this.onChangeName}
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="description">Description</label>
+                <label htmlFor="Email">Email</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="description"
-                  value={currentTutorial.description}
+                  id="Email"
+                  value={currentTutorial.Email}
+                  onChange={this.onChangeEmail}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="Tellphone">Phone Number</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Tellphone"
+                  value={currentTutorial.Tellphone}
+                  onChange={this.onChangeTellphone}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="District">District</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="District"
+                  value={currentTutorial.District}
+                  onChange={this.onChangeDistrict}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="Address">Address</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Address"
+                  value={currentTutorial.Address}
+                  onChange={this.onChangeAddress}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="Description">Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Description"
+                  value={currentTutorial.Description}
                   onChange={this.onChangeDescription}
                 />
               </div>
@@ -181,7 +285,7 @@ export default class Tutorial extends Component {
         ) : (
           <div>
             <br />
-            <p>Please click on a Tutorial...</p>
+            <p>Please click Legal Aid...</p>
           </div>
         )}
       </div>
