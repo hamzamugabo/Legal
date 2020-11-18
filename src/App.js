@@ -1,16 +1,31 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, Redirect } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-
+import Login from '../src/auth/Login';
+import Register from "../src/auth/Register";
 import AddTutorial from "./components/add-tutorial.component";
 import TutorialsList from "./components/tutorials-list.component";
-
+import firebase, * as firbase from "firebase";
+// import "firebase/database";
+// import 'firebase/auth';
+const firebaseConfig = {
+  apiKey: "AIzaSyBJk7uMiqeA2y58nPOlcknqoXsoTRvWwrY",
+  authDomain: "legal-aid-1b91e.firebaseapp.com",
+  databaseURL: "https://legal-aid-1b91e.firebaseio.com",
+  projectId: "legal-aid-1b91e",
+  storageBucket: "legal-aid-1b91e.appspot.com",
+  messagingSenderId: "378154352179",
+  appId: "1:378154352179:web:d4881953b13bc22832ed46",
+  measurementId: "G-6527YCQVLM"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 class App extends Component {
   render() {
     return (
       <div>
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
+        {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
           <a href="/tutorials" className="navbar-brand">
             bezKoder
           </a>
@@ -26,14 +41,15 @@ class App extends Component {
               </Link>
             </li>
           </div>
-        </nav>
+        </nav> */}
 
         <div className="container mt-3">
-          <h2>React Firebase Database CRUD</h2>
-          <Switch>
+          <h2>Legal Aid</h2>
+          <Login/>
+          {/* <Switch>
             <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
             <Route exact path="/add" component={AddTutorial} />
-          </Switch>
+          </Switch> */}
         </div>
       </div>
     );

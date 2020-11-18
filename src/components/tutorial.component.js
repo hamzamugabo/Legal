@@ -250,7 +250,7 @@ export default class Tutorial extends Component {
               </div>
             </form>
 
-            {currentTutorial.published ? (
+            {/* {currentTutorial.published ? (
               <button
                 className="badge badge-primary mr-2"
                 onClick={() => this.updatePublished(false)}
@@ -264,7 +264,7 @@ export default class Tutorial extends Component {
               >
                 Publish
               </button>
-            )}
+            )} */}
 
             <button
               className="badge badge-danger mr-2"
