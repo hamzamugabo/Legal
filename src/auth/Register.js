@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import firebase, * as firbase from "firebase";
+import firebase from "firebase/app";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // const db = firebase.ref("/LegalAid");
@@ -38,6 +38,8 @@ export default class Register extends Component {
       email: "",
       tellphone:'',
       password: "",
+      loading:false,
+      errorMessage:null
     };
   }
 
@@ -65,6 +67,9 @@ export default class Register extends Component {
   }
 
   onSubmit(e) {
+    this.setState({
+      loading: true,
+    });
     e.preventDefault();
 
     console.log(`Form submitted:`);
@@ -73,23 +78,23 @@ export default class Register extends Component {
     console.log(`tellphone: ${this.state.tellphone}`);
     console.log(`password: ${this.state.password}`);
 
-    const newTodo = {
-      displayName: this.state.displayName,
-      email: this.state.email,
-      tellphone: this.state.tellphone,
-      password: this.state.password,
-    };
+    // const newTodo = {
+    //   displayName: this.state.displayName,
+    //   email: this.state.email,
+    //   tellphone: this.state.tellphone,
+    //   password: this.state.password,
+    // };
 
     // handleSignUp = () => {
         // this.setState({ loading: true, disabled: true });
      firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(userCredentials => {
-                this.props.history.push("/login");
+                this.props.history.push("/");
                 return userCredentials.user.updateProfile({
                     displayName: this.state.displayName,
                     phoneNumber: this.state.tellphone
                 });
-    
+               
             })
             .catch((error) => {
               console.log(error);
@@ -104,20 +109,12 @@ export default class Register extends Component {
       email: "",
       tellphone: "",
       password: "",
+      loading: false,
     });
    
   }
 
-  componentDidMount() {
-    axios
-      .get("http://localhost:4000/todos")
-      .then((response) => {
-        this.setState({ todos: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+ 
   login = () => {
     return this.props.history.push('/');
     }
@@ -125,7 +122,10 @@ export default class Register extends Component {
     return (
       <div className="container">
       <div className="submit-form">
+        
+      {this.state.loading?"Loading...":null}
         <h3>Register</h3>
+    <p style={{color:'red'}}>{this.state.errorMessage}</p>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Usename: </label>

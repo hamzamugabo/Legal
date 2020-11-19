@@ -1,12 +1,24 @@
 // import firebase from "../firebase";
-import firebase, * as firbase from "firebase";
+import  firebase from "firebase/app";
+import 'firebase/database';
+import 'firebase/auth';
 // const db = firebase.database().ref("/LegalAid");
 
 class TutorialDataService {
+  
   getAll() {
+    
     return firebase.database().ref("/LegalAid");
   }
+  getUser() {
+    const {currentUser} = firebase.auth();
 
+    //  const { profileImageUrl } = this.state;
+
+    this.setState({currentUser});
+    //
+    
+  }
   create(tutorial) {
     return firebase.database().ref("/LegalAid").push(tutorial);
   }

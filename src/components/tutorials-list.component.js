@@ -3,12 +3,14 @@ import TutorialDataService from "../services/tutorial.service";
 
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Tutorial from "./tutorial.component";
-
+// import Tutorial from "./tutorial.component";
+import  firebase from "firebase/app";
+import 'firebase/auth';
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.refreshList = this.refreshList.bind(this);
+    this.Logout = this.Logout.bind(this);
     this.setActiveTutorial = this.setActiveTutorial.bind(this);
     this.removeAllTutorials = this.removeAllTutorials.bind(this);
     this.onDataChange = this.onDataChange.bind(this);
@@ -18,18 +20,28 @@ export default class Home extends Component {
       data: [],
       currentTutorial: null,
       currentIndex: -1,
+      // currentUser:null,
+      admin:false,
+      user:false,
+      email:'',
+      loading:false
     };
   }
 
   componentDidMount() {
     TutorialDataService.getAll().on("value", this.onDataChange);
+    // this.usertype.bind(this);
   }
 
+ 
+
   componentWillUnmount() {
+
     TutorialDataService.getAll().off("value", this.onDataChange);
   }
 
   onDataChange(items) {
+
     let tutorials = [];
 
     items.forEach((item) => {
@@ -98,7 +110,7 @@ export default class Home extends Component {
     this.setState({
       tutorials: filteredData,
     });
-console.log(this.state.tutorials);
+// console.log(this.state.tutorials);
 // const data = filteredData.map((Legal) => {});
 // console.log(data);
 
@@ -106,16 +118,35 @@ console.log(this.state.tutorials);
   all = () => {
     TutorialDataService.getAll().on("value", this.onDataChange);
     }
+    Logout() {
+      firebase.auth().signOut();
+      this.props.history.push("/");
+    }
 
   render() {
-    const { tutorials, currentTutorial, currentIndex } = this.state;
+    const { tutorials, currentIndex } = this.state;
 
     return (
-      <div className="list row">
-        <div className="col-md-6">
+      <div className="container" style={{backgroundColor:'#DCDCDC'}}>
+       {/* {this.state.admin?"rue":"no"} */}
           <h4>Legal Aid List</h4>
-          <div>
+          <button
+            className="m-3 btn btn-sm btn-danger"
+            style={{
+              display:'flex',
+              justifyContent:'flex-end',
+              float:'right'
+            }}
+            onClick={this.Logout}
+          >
+            Logout
+          </button>
+           
+              {/* <div > */}
+              <div  className="row" style={{padding:10}}>
+              <div>
           <Button
+          style={{backgroundColor:'#000080',padding:10}}
                 // style={[styles.buttonContainer, styles.loginButton]}
                 // onPress={this.searchFilterFunction}
                 // key={index}
@@ -124,11 +155,14 @@ console.log(this.state.tutorials);
                 >
                All
               </Button>
+              </div>
           {tutorials &&
               tutorials.map((order, index) => (
               
-              <div key={index} style={{borderBottomColor:'orange',padding:10}}>
+              <div className="d-flex justify-content-around" key={index} style={{borderBottomColor:'orange',padding:10}}>
                  <Button
+          style={{backgroundColor:'#000080',padding:10}}
+
                 // style={[styles.buttonContainer, styles.loginButton]}
                 // onPress={this.searchFilterFunction}
                 key={index}
@@ -139,40 +173,65 @@ console.log(this.state.tutorials);
               </Button>
                 </div>
                 ))}
+                {/* </div> */}
           </div>
-          <ul className="list-group">
+      <div className="row">
+
+           {/* <div className="col-md-4"> */}
+            
+          {/* <ul > */}
             {}
             {tutorials &&
               tutorials.map((tutorial, index) => (
-                <li
+                <div
                   className={
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
                   onClick={() => this.setActiveTutorial(tutorial, index)}
                   key={index}
+
+                  style={{
+                    shadowColor: 'black',
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    elevation: 8,
+    // backgroundColor: '#000080',
+    padding: 20,
+    borderRadius: 10,
+    // width: 155,
+    // height: 120,
+    alignItems:'flex-start',
+    marginBottom:10,
+    marginLeft:10,
+    marginRight:10,
+                  }}
+
                 >
-                <div>
+                {/* <div> */}
                 <p><strong> Name:</strong>   {tutorial.Name}</p>  
                 <p><strong>Address:</strong>   {tutorial.Address}</p>  
                 <p><strong>District:</strong>   {tutorial.District}</p>  
                 <p><strong>Email:</strong>   {tutorial.Email}</p>  
                 <p><strong> Tellphone:</strong>   {tutorial.Tellphone}</p>  
                 <p><strong> Description:</strong>   {tutorial.Description}</p>  
-                </div>
+                {/* </div> */}
                   
-                </li>
+                </div>
               ))}
-          </ul>
-
+              
+         
+          {/* </ul> */}
+{/* 
           <button
             className="m-3 btn btn-sm btn-danger"
             onClick={this.removeAllTutorials}
           >
             Remove All
-          </button>
-        </div>
-        <div className="col-md-6">
+          </button> */}
+        {/* </div> */}
+        {/* <div className="col-md-6">
           {currentTutorial ? (
             <Tutorial
               tutorial={currentTutorial}
@@ -181,10 +240,11 @@ console.log(this.state.tutorials);
           ) : (
             <div>
               <br />
-              <p>Please click Legal Aid...</p>
+              <p>Please click Legal Aid..</p>
             </div>
           )}
-        </div>
+        </div> */}
+      </div>
       </div>
     );
   }

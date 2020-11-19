@@ -1,18 +1,14 @@
 import React, { Component } from "react";
 import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useHistory,
-  Redirect,
+
   withRouter
 } from "react-router-dom";
-import axios from 'axios';
-import Register from "./Register";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import firebase, * as firbase from "firebase";
+import firebase from "firebase/app";
+import 'firebase/auth';
+
  class Login extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +22,8 @@ import firebase, * as firbase from "firebase";
       // username: "",
       email: "",
       password: "",
+      errorMessage:null,
+      loading:false
     };
   }
 
@@ -48,6 +46,8 @@ import firebase, * as firbase from "firebase";
   }
 
   onSubmit(e) {
+this.setState({loading:true});
+
         e.preventDefault();
         
         console.log(`Form submitted:`);
@@ -64,11 +64,47 @@ import firebase, * as firbase from "firebase";
         firebase.auth()
         .signInWithEmailAndPassword(newTodo.email,newTodo.password)
         .then((success) => {
+          
+    var newUser = newTodo.email;
+    // var email_edit1 = newUser.replace('@', '-');
+
+    var newString2 = newUser.replace(/[^0-9a-z]/gi, '-');
+
+// console.log(user);
+        firebase.database()
+          .ref('users/' + newString2 + '/admin')
+          .once('value', (snapshot) => {
+            if (snapshot.exists()) {
+              
+              const user_type = snapshot.val();
+              // alert(user_type);
+              if (user_type === 'admin') {
+                // this.props.navigation.navigate('AdminHome');
+          this.props.history.push("/admin");
+                
+                // alert('Posting Entity');
+this.setState({loading:false});
+
+              } else {
+                // this.props.navigation.navigate('Home');
           this.props.history.push("/home");
+this.setState({loading:false});
+                
+              }
+            } else {
+          this.props.history.push("/home");
+
+              // alert("no exis");
+              // this.props.navigation.navigate('Home');
+              // this.setState({loading: false, disabled: false});
+            }
+          });
       })
       // history.push("/");
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+this.setState({loading:false});
+
         this.setState({ errorMessage: error.message }); 
         //  this.setState({ loading: false, disabled: false });
     });
@@ -107,7 +143,10 @@ import firebase, * as firbase from "firebase";
           <div className="col-md-3"></div>
           <div className="submit-form">
       <div style={{ marginTop: 10, alignItems:'center',justifyContent:'center' }}>
+        {this.state.loading?"Loading...":null}
+        {'\n'}
         <h3>Login</h3>
+       <p style={{color:'red'}}> {this.state.errorMessage}</p>
         <form onSubmit={this.onSubmit}>
           {/* <div className="form-group">
             <label>Usename: </label>

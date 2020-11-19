@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 
-export default class AddTutorial extends Component {
+export default class AddLegalAid extends Component {
   constructor(props) {
     super(props);
     this.onChangeName = this.onChangeName.bind(this);
@@ -12,6 +12,7 @@ export default class AddTutorial extends Component {
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.saveTutorial = this.saveTutorial.bind(this);
     this.newTutorial = this.newTutorial.bind(this);
+    this.back = this.back.bind(this);
 
     this.state = {
       Description: "" ,
@@ -108,15 +109,27 @@ export default class AddTutorial extends Component {
       submitted: false,
     });
   }
+  back(){
+    this.props.history.push('/admin');
+  }
+  // Back(){
+  //   this.props.history.push('/admin');
+  // }
 
   render() {
     return (
-      <div className="submit-form">
+      <div className="submit-form" style={{marginTop:30}}>
+         
+        <h3>Add Legal Aid</h3>
+       
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
             <button className="btn btn-success" onClick={this.newTutorial}>
               Add
+            </button>
+            <button className="btn btn-info" onClick={this.back}>
+              Back
             </button>
           </div>
         ) : (
@@ -155,7 +168,7 @@ export default class AddTutorial extends Component {
                 id="Tellphone"
                 required
                 value={this.state.Tellphone}
-                onChange={this.onChangeName}
+                onChange={this.onChangeTellphone}
                 name="Tellphone"
               />
             </div>
@@ -195,7 +208,17 @@ export default class AddTutorial extends Component {
                 name="Description"
               />
             </div>
-
+            <button
+            className="m-3 btn btn-sm btn-info"
+            style={{
+              display:'flex',
+              justifyContent:'flex-end',
+              float:'right'
+            }}
+            onClick={this.back}
+          >
+            Back
+          </button>
             <button onClick={this.saveTutorial} className="btn btn-success">
               Add
             </button>

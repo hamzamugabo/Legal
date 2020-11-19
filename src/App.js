@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-import { Switch, Route, Link, Redirect } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Login from '../src/auth/Login';
-import Register from "../src/auth/Register";
-import AddTutorial from "./components/add-tutorial.component";
-import TutorialsList from "./components/tutorials-list.component";
-import firebase, * as firbase from "firebase";
-// import "firebase/database";
+import firebase from "firebase/app";
+import "firebase/database";
 // import 'firebase/auth';
 const firebaseConfig = {
   apiKey: "AIzaSyBJk7uMiqeA2y58nPOlcknqoXsoTRvWwrY",
