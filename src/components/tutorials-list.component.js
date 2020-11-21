@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
-
-import Button from 'react-bootstrap/Button';
+import {Button,DropdownButton,Dropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import Tutorial from "./tutorial.component";
 import  firebase from "firebase/app";
@@ -14,6 +13,8 @@ export default class Home extends Component {
     this.setActiveTutorial = this.setActiveTutorial.bind(this);
     this.removeAllTutorials = this.removeAllTutorials.bind(this);
     this.onDataChange = this.onDataChange.bind(this);
+    this.search = this.search.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       tutorials: [],
@@ -24,7 +25,8 @@ export default class Home extends Component {
       admin:false,
       user:false,
       email:'',
-      loading:false
+      loading:false,
+      search:''
     };
   }
 
@@ -89,20 +91,7 @@ export default class Home extends Component {
       });
   }
   searchFilterFunction = (District) => {
-    // text = this.state.data.District;
-    // this.setState({
-    //   value: this.state.data.District,
-    // });
-
-    // const newData = this.arrayholder.filter((item) => {
-    //   const itemData = `${item.Address.toUpperCase()} ${item.District.toUpperCase()}${item.Name.toUpperCase()}`;
-    //   const textData = District.toUpperCase();
-
-    //   return itemData.indexOf(textData) > -1;
-    // });
-    // this.setState({
-    //   data: newData,
-    // });
+   
     console.log(District);
     let approvalVariable = District
     let filteredData = this.state.tutorials.filter(x => String(x.District).includes(approvalVariable));
@@ -110,11 +99,33 @@ export default class Home extends Component {
     this.setState({
       tutorials: filteredData,
     });
-// console.log(this.state.tutorials);
-// const data = filteredData.map((Legal) => {});
-// console.log(data);
 
   };
+  search(e) {
+    this.setState({
+      search: e.target.value,
+    });
+    
+  }
+  onSubmit(e) {
+    
+            e.preventDefault();
+            
+            // console.log(e);
+            // console.log(`username: ${this.state.username}`);
+            console.log(`email: ${this.state.search}`);
+            // console.log(`password: ${this.state.password}`);
+            let approvalVariable = this.state.search;
+           let filteredData = this.state.tutorials.filter(x => String(x.approvalVariable).includes(approvalVariable));
+        console.log(this.state.tutorials)
+            this.setState({
+              tutorials: filteredData,
+            });
+           
+    
+         
+           
+        }
   all = () => {
     TutorialDataService.getAll().on("value", this.onDataChange);
     }
@@ -130,21 +141,10 @@ export default class Home extends Component {
       <div className="container" style={{backgroundColor:'#DCDCDC'}}>
        {/* {this.state.admin?"rue":"no"} */}
           <h4>Legal Aid List</h4>
-          <button
-            className="m-3 btn btn-sm btn-danger"
-            style={{
-              display:'flex',
-              justifyContent:'flex-end',
-              float:'right'
-            }}
-            onClick={this.Logout}
-          >
-            Logout
-          </button>
-           
-              {/* <div > */}
-              <div  className="row" style={{padding:10}}>
-              <div>
+          <div className="row">
+            <div className="col-sm-4">
+          <DropdownButton id="dropdown-basic-button" title="Select Discrit">
+  <Dropdown.Item > <div>
           <Button
           style={{backgroundColor:'#000080',padding:10}}
                 // style={[styles.buttonContainer, styles.loginButton]}
@@ -155,8 +155,9 @@ export default class Home extends Component {
                 >
                All
               </Button>
-              </div>
-          {tutorials &&
+              </div></Dropdown.Item>
+  <Dropdown.Item>
+  {tutorials &&
               tutorials.map((order, index) => (
               
               <div className="d-flex justify-content-around" key={index} style={{borderBottomColor:'orange',padding:10}}>
@@ -173,9 +174,49 @@ export default class Home extends Component {
               </Button>
                 </div>
                 ))}
-                {/* </div> */}
+  </Dropdown.Item>
+</DropdownButton>
+</div>
+<div className="col-sm-4">
+
+
+{/* <form onSubmit={this.onSubmit}>
+<input
+                type="text"
+                // className="form-control"
+                id="search"
+                required
+                value={this.state.search}
+                onChange={this.search}
+                name="search"
+              />
+              <input
+              type="submit"
+              value="Search"
+              style={{float:'right'}}
+              // className="btn btn-primary"
+
+            />
+              </form> */}
+</div>
+<div className="col-sm-4">
+          <button
+            className="m-3 btn btn-sm btn-danger"
+            style={{
+              display:'flex',
+              justifyContent:'flex-end',
+              float:'right'
+            }}
+            onClick={this.Logout}
+          >
+            Logout
+          </button>
           </div>
-      <div className="row">
+          </div>
+             
+          {'\n'}
+<div></div>
+      <div className="row" style={{marginTop:20}}>
 
            {/* <div className="col-md-4"> */}
             

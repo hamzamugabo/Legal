@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
+import {Button,DropdownButton,Dropdown} from 'react-bootstrap';
 
-import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Tutorial from "./tutorial.component";
 import  firebase from "firebase/app";
@@ -135,7 +135,66 @@ console.log(this.state.tutorials);
       <div className="container" style={{backgroundColor:'#DCDCDC'}}>
        {/* {this.state.admin?"rue":"no"} */}
           <h4>Legal Aid List</h4>
-         
+          <div className="row">
+            <div className="col-sm-4">
+          <DropdownButton id="dropdown-basic-button" title="Select Discrit">
+  <Dropdown.Item > <div>
+          <Button
+          style={{backgroundColor:'#000080',padding:10}}
+                // style={[styles.buttonContainer, styles.loginButton]}
+                // onPress={this.searchFilterFunction}
+                // key={index}
+                  onClick={this.all.bind(this)}
+
+                >
+               All
+              </Button>
+              </div></Dropdown.Item>
+  <Dropdown.Item>
+  {tutorials &&
+              tutorials.map((order, index) => (
+              
+              <div className="d-flex justify-content-around" key={index} style={{borderBottomColor:'orange',padding:10}}>
+                 <Button
+          style={{backgroundColor:'#000080',padding:10}}
+
+                // style={[styles.buttonContainer, styles.loginButton]}
+                // onPress={this.searchFilterFunction}
+                key={index}
+                  onClick={this.searchFilterFunction.bind(this, order.District)}
+
+                >
+               {order.District}
+              </Button>
+                </div>
+                ))}
+  </Dropdown.Item>
+</DropdownButton>
+</div>
+<div className="col-sm-4">
+
+
+{/* <form onSubmit={this.onSubmit}>
+<input
+                type="text"
+                // className="form-control"
+                id="search"
+                required
+                value={this.state.search}
+                onChange={this.search}
+                name="search"
+              />
+              <input
+              type="submit"
+              value="Search"
+              style={{float:'right'}}
+              // className="btn btn-primary"
+
+            />
+              </form> */}
+</div>
+<div className="col-sm-4">
+
           <button
             className="m-3 btn btn-sm btn-danger"
             style={{
@@ -158,14 +217,17 @@ console.log(this.state.tutorials);
           >
             Add Legal Aid
           </button>
+          </div>
+          </div>
+{'\n'}
+<div></div>
+        
               {/* <div > */}
-              <div  className="row" style={{padding:10}}>
+              {/* <div  className="row" style={{padding:10}}>
               <div>
           <Button
           style={{backgroundColor:'#000080',padding:10}}
-                // style={[styles.buttonContainer, styles.loginButton]}
-                // onPress={this.searchFilterFunction}
-                // key={index}
+               
                   onClick={this.all.bind(this)}
 
                 >
@@ -179,8 +241,7 @@ console.log(this.state.tutorials);
                  <Button
           style={{backgroundColor:'#000080',padding:10}}
 
-                // style={[styles.buttonContainer, styles.loginButton]}
-                // onPress={this.searchFilterFunction}
+               
                 key={index}
                   onClick={this.searchFilterFunction.bind(this, order.District)}
 
@@ -189,8 +250,8 @@ console.log(this.state.tutorials);
               </Button>
                 </div>
                 ))}
-                {/* </div> */}
-          </div>
+                
+          </div> */}
       <div className="list row">
 
            <div className="col-md-5">

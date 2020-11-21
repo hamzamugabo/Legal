@@ -89,7 +89,7 @@ export default class Register extends Component {
         // this.setState({ loading: true, disabled: true });
      firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(userCredentials => {
-                this.props.history.push("/");
+                this.props.history.push("/Legal");
                 return userCredentials.user.updateProfile({
                     displayName: this.state.displayName,
                     phoneNumber: this.state.tellphone
