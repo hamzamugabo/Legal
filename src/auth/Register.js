@@ -116,7 +116,7 @@ export default class Register extends Component {
 
  
   login = () => {
-    return this.props.history.push('/');
+    return this.props.history.push('/Legal');
     }
   render() {
     return (

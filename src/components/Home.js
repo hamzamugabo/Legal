@@ -90,7 +90,7 @@ export default class Admin extends Component {
   Logout() {
     
     firebase.auth().signOut();
-    this.props.history.push("/");
+    this.props.history.push("/Legal");
   }
   addLegalAid() {
     
