@@ -4,6 +4,12 @@ import "./App.css";
 import Login from '../src/auth/Login';
 import firebase from "firebase/app";
 import "firebase/database";
+import Register from '../src/auth/Register';
+import Home from '../src/components/tutorials-list.component';
+import Admin from '../src/components/Home';
+import AddLegalAid from '../src/components/add-tutorial.component';
+import { BrowserRouter,Switch,Route } from "react-router-dom";
+
 // import 'firebase/auth';
 const firebaseConfig = {
   apiKey: "AIzaSyBJk7uMiqeA2y58nPOlcknqoXsoTRvWwrY",
@@ -41,11 +47,17 @@ class App extends Component {
 
         <div className="container mt-3">
           <h2>Legal Aid</h2>
-          <Login/>
-          {/* <Switch>
-            <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
-            <Route exact path="/add" component={AddTutorial} />
-          </Switch> */}
+          {/* <Login/> */}
+          <BrowserRouter>
+          <Switch>
+            
+         <Route exact path="/" component={Login} />
+         <Route path="/register" component={Register} />
+         <Route path="/home" component={Home} />
+         <Route path="/admin" component={Admin} />
+         <Route path="/addLegalAid" component={AddLegalAid} />
+          </Switch>
+          </BrowserRouter>
         </div>
       </div>
     );

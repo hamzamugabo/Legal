@@ -11,15 +11,18 @@ import AddLegalAid from '../src/components/add-tutorial.component';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <BrowserRouter>
-       <Switch>
-        <Route exact path="/" component={App} />
-        <Route path="/register" component={Register} />
-        <Route path="/home" component={Home} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/addLegalAid" component={AddLegalAid} />
-      </Switch>
-      </BrowserRouter>,
+  // <BrowserRouter>
+  //      <Switch>
+  //       <Route exact path="/" component={App} />
+  //       <Route path="/register" component={Register} />
+  //       <Route path="/home" component={Home} />
+  //       <Route path="/admin" component={Admin} />
+  //       <Route path="/addLegalAid" component={AddLegalAid} />
+  //     </Switch>
+  //     </BrowserRouter>,
+  <React.StrictMode>
+  <App />
+</React.StrictMode>,
       
   document.getElementById('root')
 );

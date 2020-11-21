@@ -198,4 +198,4 @@ this.setState({loading:false});
     );
   }
 }
-export default withRouter(Login);
+export default Login;
