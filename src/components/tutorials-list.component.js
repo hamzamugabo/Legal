@@ -143,7 +143,7 @@ export default class Home extends Component {
           <h4>Legal Aid List</h4>
           <div className="row">
             <div className="col-sm-4">
-          <DropdownButton id="dropdown-basic-button" title="Select Discrit">
+          <DropdownButton id="dropdown-basic-button" title="Select District">
   <Dropdown.Item > <div>
           <Button
           style={{backgroundColor:'#000080',padding:10}}
