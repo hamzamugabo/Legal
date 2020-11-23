@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 
+import  firebase from "firebase/app";
+import 'firebase/auth';
 export default class AddLegalAid extends Component {
   constructor(props) {
     super(props);
@@ -72,26 +74,37 @@ export default class AddLegalAid extends Component {
 
 
   saveTutorial() {
-    let data = {
-      Name: this.state.Name,
-      Email: this.state.Email,
-      Tellphone: this.state.Tellphone,
-      Address: this.state.Address,
-      District: this.state.District,
-      Description: this.state.Description,
-      published: false
-    };
-
-    TutorialDataService.create(data)
-      .then(() => {
-        console.log("Added new Legal Aid successfully!");
-        this.setState({
-          submitted: true,
-        });
-      })
-      .catch((e) => {
-        console.log(e);
+    firebase.
+      auth().onAuthStateChanged((user) => {
+        if (user) {
+          let data = {
+            Name: this.state.Name,
+            Email: this.state.Email,
+            Tellphone: this.state.Tellphone,
+            Address: this.state.Address,
+            District: this.state.District,
+            Description: this.state.Description,
+            published: false
+          };
+      
+          TutorialDataService.create(data)
+            .then(() => {
+              console.log("Added new Legal Aid successfully!");
+              this.setState({
+                submitted: true,
+              });
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        } else{
+    this.props.history.push("/Legal");
+          
+          alert("The user is Logge-out")
+        }
       });
+    
+   
   }
 
   newTutorial() {

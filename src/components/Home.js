@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
-import {Button,DropdownButton,Dropdown} from 'react-bootstrap';
+import {Button,DropdownButton,Dropdown,Form,Col} from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Tutorial from "./tutorial.component";
@@ -16,6 +16,9 @@ export default class Admin extends Component {
     this.Logout = this.Logout.bind(this);
     this.addLegalAid = this.addLegalAid.bind(this);
     this.onDataChange = this.onDataChange.bind(this);
+    this.search = this.search.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+
 
     this.state = {
       tutorials: [],
@@ -24,24 +27,57 @@ export default class Admin extends Component {
       currentIndex: -1,
       // currentUser:null,
       admin:false,
-      user:false,
-      email:''
+      user:true,
+      email:'',
+      loading:false,
+      search:''
     };
   }
 
   componentDidMount() {
-    TutorialDataService.getAll().on("value", this.onDataChange);
-    // this.usertype.bind(this);
+    if(this.state.user === true){
+      firebase.
+      auth().onAuthStateChanged((user) => {
+        if (user) {
+          TutorialDataService.getAll().on("value", this.onDataChange);
+          // this.usertype.bind(this);
+        //  console.log('no user')
+        } else{
+    this.props.history.push("/Legal");
+          
+          alert("The user is Logge-out")
+
+        }
+      });
+    }
   }
 
-  
+ 
 
   componentWillUnmount() {
-    TutorialDataService.getAll().off("value", this.onDataChange);
+    if(this.state.user){
+      firebase.
+      auth().onAuthStateChanged((user) => {
+        if (user) {
+          TutorialDataService.getAll().off("value", this.onDataChange);
+          // this.usertype.bind(this);
+        //  console.log('no user')
+        } else{
+    this.props.history.push("/Legal");
+          
+          alert("The user is Logge-out")
+
+        }
+      });
+    // TutorialDataService.getAll().off("value", this.onDataChange);
+  }
   }
 
   onDataChange(items) {
-    let tutorials = [];
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        let tutorials = [];
 
     items.forEach((item) => {
       let key = item.key;
@@ -62,70 +98,196 @@ export default class Admin extends Component {
       tutorials: tutorials,
     });
     this.arrayholder = tutorials;
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+
+      }
+    });
+   
   }
 
   refreshList() {
-    this.setState({
-      currentTutorial: null,
-      currentIndex: -1,
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({
+          currentTutorial: null,
+          currentIndex: -1,
+        });
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+
+      }
     });
+    
   }
 
   setActiveTutorial(tutorial, index) {
-    this.setState({
-      currentTutorial: tutorial,
-      currentIndex: index,
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({
+          currentTutorial: tutorial,
+          currentIndex: index,
+        });
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+
+      }
     });
+    
   }
 
   removeAllTutorials() {
-    TutorialDataService.deleteAll()
-      .then(() => {
-        this.refreshList();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        TutorialDataService.deleteAll()
+        .then(() => {
+          this.refreshList();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+
+      }
+    });
+  
   }
   Logout() {
-    
     firebase.auth().signOut();
+    
     this.props.history.push("/Legal");
+    this.setState({
+      user: false,
+    
+    });
   }
   addLegalAid() {
-    
-    // firebase.auth().signOut();
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+       // firebase.auth().signOut();
     this.props.history.push("/addLegalAid");
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+
+      }
+    });
+   
   }
   searchFilterFunction = (District) => {
-    // text = this.state.data.District;
-    // this.setState({
-    //   value: this.state.data.District,
-    // });
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(District);
+        let approvalVariable = District
+        let filteredData = this.state.tutorials.filter(x => String(x.District).includes(approvalVariable));
+    
+        this.setState({
+          tutorials: filteredData,
+        });
+    console.log(this.state.tutorials);
+    // const data = filteredData.map((Legal) => {});
+    // console.log(data);
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
 
-    // const newData = this.arrayholder.filter((item) => {
-    //   const itemData = `${item.Address.toUpperCase()} ${item.District.toUpperCase()}${item.Name.toUpperCase()}`;
-    //   const textData = District.toUpperCase();
-
-    //   return itemData.indexOf(textData) > -1;
-    // });
-    // this.setState({
-    //   data: newData,
-    // });
-    console.log(District);
-    let approvalVariable = District
-    let filteredData = this.state.tutorials.filter(x => String(x.District).includes(approvalVariable));
-
-    this.setState({
-      tutorials: filteredData,
+      }
     });
-console.log(this.state.tutorials);
-// const data = filteredData.map((Legal) => {});
-// console.log(data);
+   
 
   };
+  search(e) {
+    // firebase.
+    // auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     if(this.state.user){
+
+          // this.setState({
+          //   search: e.target.value,
+          // });
+          if(e.target.value !=='')
+          {
+            this.setState({
+              search: e.target.value,
+            }); 
+          }
+          else{
+          TutorialDataService.getAll().on("value", this.onDataChange);
+      
+          }
+                  // console.log(e.target.value);
+    //     }
+    //   } else{
+    // this.props.history.push("/Legal");
+    
+    //     alert("The user is Logge-out")
+
+    //   }
+    // });
+    
+  }
+  onSubmit(e) {
+    // firebase.
+    // auth().onAuthStateChanged((user) => {
+    //   if (user) {
+        if(this.state.user){
+          e.preventDefault();
+      
+          let approvalVariable = this.state.search;
+          console.log(approvalVariable);
+      
+          let filteredData
+           = 
+          //  this.state.tutorials.filter(x => String(x.approvalVariable).includes(approvalVariable));
+          // this.state.tutorials.map((order, index) => {return order;});
+          this.state.tutorials.filter(name => name.District === this.state.search).map(filteredName => {
+            return filteredName});
+          // console.log(filteredData);
+      
+          this.setState({
+            tutorials: filteredData,
+          
+          });
+        }
+    //   } else{
+    // this.props.history.push("/Legal");
+    
+    //     alert("The user is Logge-out")
+
+    //   }
+    // });
+    
+           
+        }
   all = () => {
-    TutorialDataService.getAll().on("value", this.onDataChange);
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {    
+        TutorialDataService.getAll().on("value", this.onDataChange);
+
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+
+      }
+    });
     }
 
   render() {
@@ -173,7 +335,18 @@ console.log(this.state.tutorials);
 </div>
 <div className="col-sm-4">
 
-
+<Form  onSubmit={this.onSubmit}>
+  <Form.Row >
+    <Col>
+      <Form.Control type="text" placeholder="Search..." onChange={this.search}/>
+    </Col>
+    <Col>
+    <Button variant="link" type="submit">
+    Search
+  </Button>
+    </Col>
+  </Form.Row>
+</Form>
 {/* <form onSubmit={this.onSubmit}>
 <input
                 type="text"

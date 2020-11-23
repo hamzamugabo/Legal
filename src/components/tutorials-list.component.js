@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
-import {Button,DropdownButton,Dropdown} from 'react-bootstrap';
+import {Button,DropdownButton,Dropdown,Form,Col} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import Tutorial from "./tutorial.component";
+
 import  firebase from "firebase/app";
 import 'firebase/auth';
+// import SearchField from "react-search-field";
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +16,7 @@ export default class Home extends Component {
     this.onDataChange = this.onDataChange.bind(this);
     this.search = this.search.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    
 
     this.state = {
       tutorials: [],
@@ -23,7 +25,7 @@ export default class Home extends Component {
       currentIndex: -1,
       // currentUser:null,
       admin:false,
-      user:false,
+      user:true,
       email:'',
       loading:false,
       search:''
@@ -31,20 +33,35 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    TutorialDataService.getAll().on("value", this.onDataChange);
-    // this.usertype.bind(this);
+    if(this.state.user === true){
+      firebase.
+      auth().onAuthStateChanged((user) => {
+        if (user) {
+          TutorialDataService.getAll().on("value", this.onDataChange);
+          // this.usertype.bind(this);
+        //  console.log('no user')
+        } else{
+    this.props.history.push("/Legal");
+          
+          alert("The user is Logge-out")
+        }
+      });
+    }
   }
 
  
 
   componentWillUnmount() {
+    if(this.state.user){
 
-    TutorialDataService.getAll().off("value", this.onDataChange);
+    TutorialDataService.getAll().off("value", this.onDataChange);}
   }
 
   onDataChange(items) {
-
-    let tutorials = [];
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        let tutorials = [];
 
     items.forEach((item) => {
       let key = item.key;
@@ -65,23 +82,38 @@ export default class Home extends Component {
       tutorials: tutorials,
     });
     this.arrayholder = tutorials;
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+      }
+    });
+   
   }
 
   refreshList() {
+    if(this.state.user){
+
     this.setState({
       currentTutorial: null,
       currentIndex: -1,
     });
   }
+  }
 
   setActiveTutorial(tutorial, index) {
+    if(this.state.user){
+
     this.setState({
       currentTutorial: tutorial,
       currentIndex: index,
     });
   }
+  }
 
   removeAllTutorials() {
+    if(this.state.user){
+
     TutorialDataService.deleteAll()
       .then(() => {
         this.refreshList();
@@ -89,57 +121,130 @@ export default class Home extends Component {
       .catch((e) => {
         console.log(e);
       });
+    }
   }
   searchFilterFunction = (District) => {
+    if(this.state.user === true){
+      firebase.
+      auth().onAuthStateChanged((user) => {
+        if (user) {
+          if(this.state.user){
    
-    console.log(District);
-    let approvalVariable = District
-    let filteredData = this.state.tutorials.filter(x => String(x.District).includes(approvalVariable));
-
-    this.setState({
-      tutorials: filteredData,
-    });
-
+            console.log(District);
+            let approvalVariable = District
+            let filteredData = this.state.tutorials.filter(x => String(x.District).includes(approvalVariable));
+        
+            this.setState({
+              tutorials: filteredData,
+            
+            });
+            // const keyword = "kam";
+        
+            // const filtered = this.state.tutorials.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(keyword)));
+            
+            // console.log(filtered);
+          }
+        } else{
+    this.props.history.push("/Legal");
+          
+          alert("The user is Logge-out")
+        }
+      });
+    }
+    
   };
   search(e) {
-    this.setState({
-      search: e.target.value,
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        if(this.state.user){
+
+          // this.setState({
+          //   search: e.target.value,
+          // });
+          if(e.target.value !=='')
+          {
+            this.setState({
+              search: e.target.value,
+            }); 
+          }
+          else{
+          TutorialDataService.getAll().on("value", this.onDataChange);
+      
+          }
+                  // console.log(e.target.value);
+        }
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+      }
     });
     
   }
   onSubmit(e) {
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        if(this.state.user){
+          e.preventDefault();
+      
+          // console.log(this.state.search);
+          // // this.search=District;
+          // District = this.state.search;
+          let approvalVariable = this.state.search;
+          console.log(approvalVariable);
+      
+          let filteredData
+           = 
+          //  this.state.tutorials.filter(x => String(x.approvalVariable).includes(approvalVariable));
+          // this.state.tutorials.map((order, index) => {return order;});
+          this.state.tutorials.filter(name => name.District === this.state.search).map(filteredName => {
+            return filteredName});
+          // console.log(filteredData);
+      
+          this.setState({
+            tutorials: filteredData,
+          
+          });
+        }
+      } else{
+    this.props.history.push("/Legal");
+        
+        alert("The user is Logge-out")
+      }
+    });
     
-            e.preventDefault();
-            
-            // console.log(e);
-            // console.log(`username: ${this.state.username}`);
-            console.log(`email: ${this.state.search}`);
-            // console.log(`password: ${this.state.password}`);
-            let approvalVariable = this.state.search;
-           let filteredData = this.state.tutorials.filter(x => String(x.approvalVariable).includes(approvalVariable));
-        console.log(this.state.tutorials)
-            this.setState({
-              tutorials: filteredData,
-            });
-           
-    
-         
            
         }
   all = () => {
-    TutorialDataService.getAll().on("value", this.onDataChange);
+    firebase.
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        if(this.state.user){
+
+          TutorialDataService.getAll().on("value", this.onDataChange);}
+      } 
+    });
+    
     }
     Logout() {
       firebase.auth().signOut();
+      
       this.props.history.push("/Legal");
+      this.setState({
+        user: false,
+      
+      });
     }
 
   render() {
-    const { tutorials, currentIndex } = this.state;
+    const { tutorials, currentIndex,user } = this.state;
 
     return (
       <div className="container" style={{backgroundColor:'#DCDCDC'}}>
        {/* {this.state.admin?"rue":"no"} */}
+       
           <h4>Legal Aid List</h4>
           <div className="row">
             <div className="col-sm-4">
@@ -178,8 +283,24 @@ export default class Home extends Component {
 </DropdownButton>
 </div>
 <div className="col-sm-4">
-
-
+<Form  onSubmit={this.onSubmit}>
+  <Form.Row >
+    <Col>
+      <Form.Control type="text" placeholder="Search..." onChange={this.search}/>
+    </Col>
+    <Col>
+    <Button variant="link" type="submit">
+    Search
+  </Button>
+    </Col>
+  </Form.Row>
+</Form>
+{/* <SearchField
+  placeholder="Search..."
+  onChange={(e) => this.search(e.target.value)}
+  // searchText="This is initial search text"
+  classNames="test-class"
+/> */}
 {/* <form onSubmit={this.onSubmit}>
 <input
                 type="text"
@@ -286,7 +407,9 @@ export default class Home extends Component {
           )}
         </div> */}
       </div>
+      
       </div>
-    );
+    )
+    
   }
 }
