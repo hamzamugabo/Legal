@@ -9,6 +9,7 @@ import Home from '../src/components/tutorials-list.component';
 import Admin from '../src/components/Home';
 import AddLegalAid from '../src/components/add-tutorial.component';
 import { BrowserRouter,Switch,Route } from "react-router-dom";
+import Forgotpassword from "./auth/Forgotpassword";
 
 // import 'firebase/auth';
 const firebaseConfig = {
@@ -56,6 +57,7 @@ class App extends Component {
          <Route path="/home" component={Home} />
          <Route path="/admin" component={Admin} />
          <Route path="/addLegalAid" component={AddLegalAid} />
+         <Route path="/forgotpassword" component={Forgotpassword} />
           </Switch>
           </BrowserRouter>
         </div>

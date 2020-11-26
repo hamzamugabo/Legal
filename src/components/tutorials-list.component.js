@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
-import {Button,DropdownButton,Dropdown,Form,Col} from 'react-bootstrap';
+import {Button,DropdownButton,Dropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import  firebase from "firebase/app";
@@ -33,20 +33,9 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    if(this.state.user === true){
-      firebase.
-      auth().onAuthStateChanged((user) => {
-        if (user) {
+    
           TutorialDataService.getAll().on("value", this.onDataChange);
-          // this.usertype.bind(this);
-        //  console.log('no user')
-        } else{
-    this.props.history.push("/Legal");
-          
-          alert("The user is Logge-out")
-        }
-      });
-    }
+         
   }
 
  
@@ -58,8 +47,7 @@ export default class Home extends Component {
   }
 
   onDataChange(items) {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         let tutorials = [];
 
@@ -85,10 +73,8 @@ export default class Home extends Component {
       } else{
     this.props.history.push("/Legal");
         
-        alert("The user is Logge-out")
       }
-    });
-   
+    });  
   }
 
   refreshList() {
@@ -114,19 +100,16 @@ export default class Home extends Component {
   removeAllTutorials() {
     if(this.state.user){
 
-    TutorialDataService.deleteAll()
-      .then(() => {
+    TutorialDataService.deleteAll().then(() => {
         this.refreshList();
-      })
-      .catch((e) => {
+      }).catch((e) => {
         console.log(e);
       });
     }
   }
   searchFilterFunction = (District) => {
     if(this.state.user === true){
-      firebase.
-      auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           if(this.state.user){
    
@@ -138,11 +121,6 @@ export default class Home extends Component {
               tutorials: filteredData,
             
             });
-            // const keyword = "kam";
-        
-            // const filtered = this.state.tutorials.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(keyword)));
-            
-            // console.log(filtered);
           }
         } else{
     this.props.history.push("/Legal");
@@ -183,8 +161,7 @@ export default class Home extends Component {
     
   }
   onSubmit(e) {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         if(this.state.user){
           e.preventDefault();
@@ -218,8 +195,7 @@ export default class Home extends Component {
            
         }
   all = () => {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         if(this.state.user){
 
@@ -245,9 +221,10 @@ export default class Home extends Component {
       <div className="container" style={{backgroundColor:'#DCDCDC'}}>
        {/* {this.state.admin?"rue":"no"} */}
        
-          <h4>Legal Aid List</h4>
-          <div className="row">
-            <div className="col-sm-4">
+    <h4>{""}</h4>
+          <div className="row" >
+            <div className="col-sm-4" >
+              
           <DropdownButton id="dropdown-basic-button" title="Select District">
   <Dropdown.Item > <div>
           <Button
@@ -267,7 +244,7 @@ export default class Home extends Component {
               
               <div className="d-flex justify-content-around" key={index} style={{borderBottomColor:'orange',padding:10}}>
                  <Button
-          style={{backgroundColor:'#000080',padding:10}}
+          style={{backgroundColor:'#000080',padding:10,}}
 
                 // style={[styles.buttonContainer, styles.loginButton]}
                 // onPress={this.searchFilterFunction}
@@ -283,7 +260,7 @@ export default class Home extends Component {
 </DropdownButton>
 </div>
 <div className="col-sm-4">
-<Form  onSubmit={this.onSubmit}>
+{/* <Form  onSubmit={this.onSubmit}>
   <Form.Row >
     <Col>
       <Form.Control type="text" placeholder="Search..." onChange={this.search}/>
@@ -294,7 +271,7 @@ export default class Home extends Component {
   </Button>
     </Col>
   </Form.Row>
-</Form>
+</Form> */}
 {/* <SearchField
   placeholder="Search..."
   onChange={(e) => this.search(e.target.value)}

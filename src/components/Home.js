@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
-import {Button,DropdownButton,Dropdown,Form,Col} from 'react-bootstrap';
+import {Button,DropdownButton,Dropdown} from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Tutorial from "./tutorial.component";
@@ -36,8 +36,7 @@ export default class Admin extends Component {
 
   componentDidMount() {
     if(this.state.user === true){
-      firebase.
-      auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           TutorialDataService.getAll().on("value", this.onDataChange);
           // this.usertype.bind(this);
@@ -45,7 +44,7 @@ export default class Admin extends Component {
         } else{
     this.props.history.push("/Legal");
           
-          alert("The user is Logge-out")
+          // alert("The user is Logge-out")
 
         }
       });
@@ -56,8 +55,7 @@ export default class Admin extends Component {
 
   componentWillUnmount() {
     if(this.state.user){
-      firebase.
-      auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           TutorialDataService.getAll().off("value", this.onDataChange);
           // this.usertype.bind(this);
@@ -65,7 +63,7 @@ export default class Admin extends Component {
         } else{
     this.props.history.push("/Legal");
           
-          alert("The user is Logge-out")
+          // alert("The user is Logge-out")
 
         }
       });
@@ -74,8 +72,7 @@ export default class Admin extends Component {
   }
 
   onDataChange(items) {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         let tutorials = [];
 
@@ -109,8 +106,7 @@ export default class Admin extends Component {
   }
 
   refreshList() {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           currentTutorial: null,
@@ -127,8 +123,7 @@ export default class Admin extends Component {
   }
 
   setActiveTutorial(tutorial, index) {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           currentTutorial: tutorial,
@@ -145,8 +140,7 @@ export default class Admin extends Component {
   }
 
   removeAllTutorials() {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         TutorialDataService.deleteAll()
         .then(() => {
@@ -174,8 +168,7 @@ export default class Admin extends Component {
     });
   }
   addLegalAid() {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase. auth().onAuthStateChanged((user) => {
       if (user) {
        // firebase.auth().signOut();
     this.props.history.push("/addLegalAid");
@@ -189,8 +182,7 @@ export default class Admin extends Component {
    
   }
   searchFilterFunction = (District) => {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log(District);
         let approvalVariable = District
@@ -276,8 +268,7 @@ export default class Admin extends Component {
            
         }
   all = () => {
-    firebase.
-    auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {    
         TutorialDataService.getAll().on("value", this.onDataChange);
 
@@ -296,10 +287,10 @@ export default class Admin extends Component {
     return (
       <div className="container" style={{backgroundColor:'#DCDCDC'}}>
        {/* {this.state.admin?"rue":"no"} */}
-          <h4>Legal Aid List</h4>
+          {/* <h4>Legal Aid List</h4> */}
           <div className="row">
             <div className="col-sm-4">
-          <DropdownButton id="dropdown-basic-button" title="Select District">
+            <DropdownButton id="dropdown-basic-button" title="Select District">
   <Dropdown.Item > <div>
           <Button
           style={{backgroundColor:'#000080',padding:10}}
@@ -335,7 +326,7 @@ export default class Admin extends Component {
 </div>
 <div className="col-sm-4">
 
-<Form  onSubmit={this.onSubmit}>
+{/* <Form  onSubmit={this.onSubmit}>
   <Form.Row >
     <Col>
       <Form.Control type="text" placeholder="Search..." onChange={this.search}/>
@@ -346,7 +337,7 @@ export default class Admin extends Component {
   </Button>
     </Col>
   </Form.Row>
-</Form>
+</Form> */}
 {/* <form onSubmit={this.onSubmit}>
 <input
                 type="text"

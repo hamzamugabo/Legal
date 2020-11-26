@@ -89,6 +89,13 @@ export default class Register extends Component {
         // this.setState({ loading: true, disabled: true });
      firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(userCredentials => {
+              var user = firebase.auth().currentUser;
+              console.log(user.email);
+                        user.sendEmailVerification().then(function() {
+                          console.log("success")
+                        }).catch(function(error) {
+                          console.log(error);
+                        });
                 this.props.history.push("/Legal");
                 return userCredentials.user.updateProfile({
                     displayName: this.state.displayName,

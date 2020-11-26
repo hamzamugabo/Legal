@@ -19,7 +19,8 @@ import 'firebase/auth';
       email: "",
       password: "",
       errorMessage:null,
-      loading:false
+      loading:false,
+      verified:''
     };
   }
 
@@ -60,7 +61,10 @@ this.setState({loading:true});
         firebase.auth()
         .signInWithEmailAndPassword(newTodo.email,newTodo.password)
         .then((success) => {
-          
+          var user = firebase.auth().currentUser;
+
+          if (user.emailVerified) {
+          //   
     var newUser = newTodo.email;
     // var email_edit1 = newUser.replace('@', '-');
 
@@ -95,6 +99,11 @@ this.setState({loading:false});
               // this.setState({loading: false, disabled: false});
             }
           });
+          } else {
+this.setState({verified:"Verify your email first"});
+this.setState({loading:false});
+            
+          }
       })
       // history.push("/");
       .catch((error) => {
@@ -131,6 +140,9 @@ this.setState({loading:false});
     register = () => {
       return this.props.history.push('/register');
       }
+      password = () => {
+        return this.props.history.push('/forgotpassword');
+        }
     
   render() {
     return (
@@ -142,7 +154,8 @@ this.setState({loading:false});
         {this.state.loading?"Loading...":null}
         {'\n'}
         <h3>Login</h3>
-       <p style={{color:'red'}}> {this.state.errorMessage}</p>
+       <p style={{color:'red',fontSize:20}}> {this.state.verified}</p>
+       <p style={{color:'red',fontSize:20}}> {this.state.errorMessage}</p>
         <form onSubmit={this.onSubmit}>
           {/* <div className="form-group">
             <label>Usename: </label>
@@ -180,6 +193,8 @@ this.setState({loading:false});
             />
           </div>
         </form>
+        <Button variant="link"  onClick={this.password.bind(this)}>Forgotpassword</Button>
+
         <Button variant="link"  onClick={this.register.bind(this)}>No account? Register</Button>
         {/* <button onClick={this.register.bind(this)}>No account? Register</button> */}
         {/* <Router>
