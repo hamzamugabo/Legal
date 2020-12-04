@@ -63,7 +63,6 @@ this.setState({loading:true});
         .then((success) => {
           var user = firebase.auth().currentUser;
 
-          if (user.emailVerified) {
           //   
     var newUser = newTodo.email;
     // var email_edit1 = newUser.replace('@', '-');
@@ -86,24 +85,35 @@ this.setState({loading:true});
 this.setState({loading:false});
 
               } else {
+                if (user.emailVerified) {
+
                 // this.props.navigation.navigate('Home');
           this.props.history.push("/home");
 this.setState({loading:false});
-                
+} else {
+  this.setState({verified:"Verify your email first"});
+  this.setState({loading:false});
+              
+            } 
               }
             } else {
+              if (user.emailVerified) {
+
+                // this.props.navigation.navigate('Home');
           this.props.history.push("/home");
+this.setState({loading:false});
+} else {
+  this.setState({verified:"Verify your email first"});
+  this.setState({loading:false});
+              
+            }
 
               // alert("no exis");
               // this.props.navigation.navigate('Home');
               // this.setState({loading: false, disabled: false});
             }
           });
-          } else {
-this.setState({verified:"Verify your email first"});
-this.setState({loading:false});
-            
-          }
+         
       })
       // history.push("/");
       .catch((error) => {

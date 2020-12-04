@@ -27,7 +27,7 @@ firebase.initializeApp(firebaseConfig);
 class App extends Component {
   render() {
     return (
-      <div>
+      <div  style={{backgroundColor:'white'}}>
         {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
           <a href="/tutorials" className="navbar-brand">
             bezKoder
@@ -47,6 +47,7 @@ class App extends Component {
         </nav> */}
 
         <div className="container mt-3">
+          <div style={{backgroundColor:'#F0F3F4'}}>
           <h2>Legal Aid</h2>
           {/* <Login/> */}
           <BrowserRouter>
@@ -60,6 +61,7 @@ class App extends Component {
          <Route path="/forgotpassword" component={Forgotpassword} />
           </Switch>
           </BrowserRouter>
+          </div>
         </div>
       </div>
     );

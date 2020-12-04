@@ -218,14 +218,14 @@ export default class Home extends Component {
     const { tutorials, currentIndex,user } = this.state;
 
     return (
-      <div className="container" style={{backgroundColor:'#DCDCDC'}}>
+      <div className="container" style={{backgroundColor:''}}>
        {/* {this.state.admin?"rue":"no"} */}
        
     <h4>{""}</h4>
           <div className="row" >
             <div className="col-sm-4" >
               
-          <DropdownButton id="dropdown-basic-button" title="Select District">
+          <DropdownButton  variant="link" id="dropdown-basic-button" title="Select District">
   <Dropdown.Item > <div>
           <Button
           style={{backgroundColor:'#000080',padding:10}}
@@ -298,8 +298,8 @@ export default class Home extends Component {
               </form> */}
 </div>
 <div className="col-sm-4">
-          <button
-            className="m-3 btn btn-sm btn-danger"
+<button
+            className="m-3 btn btn-sm btn-link"
             style={{
               display:'flex',
               justifyContent:'flex-end',
@@ -307,7 +307,7 @@ export default class Home extends Component {
             }}
             onClick={this.Logout}
           >
-            Logout
+           <strong style={{fontSize:15,color:'red'}}> Logout</strong>
           </button>
           </div>
           </div>

@@ -285,12 +285,14 @@ export default class Admin extends Component {
     const { tutorials, currentTutorial, currentIndex } = this.state;
 
     return (
-      <div className="container" style={{backgroundColor:'#DCDCDC'}}>
+      <div className="container" style={{backgroundColor:''}}>
        {/* {this.state.admin?"rue":"no"} */}
           {/* <h4>Legal Aid List</h4> */}
           <div className="row">
             <div className="col-sm-4">
-            <DropdownButton id="dropdown-basic-button" title="Select District">
+            <DropdownButton variant="link"  id="dropdown-basic-button" title="Select District"
+            style={{color:'black'}}
+            >
   <Dropdown.Item > <div>
           <Button
           style={{backgroundColor:'#000080',padding:10}}
@@ -307,7 +309,7 @@ export default class Admin extends Component {
   {tutorials &&
               tutorials.map((order, index) => (
               
-              <div className="d-flex justify-content-around" key={index} style={{borderBottomColor:'orange',padding:10}}>
+              <div className="d-flex justify-content-around" key={index} style={{borderBottomColor:'black',padding:10}}>
                  <Button
           style={{backgroundColor:'#000080',padding:10}}
 
@@ -360,7 +362,7 @@ export default class Admin extends Component {
 <div className="col-sm-4">
 
           <button
-            className="m-3 btn btn-sm btn-danger"
+            className="m-3 btn btn-sm btn-link"
             style={{
               display:'flex',
               justifyContent:'flex-end',
@@ -368,18 +370,26 @@ export default class Admin extends Component {
             }}
             onClick={this.Logout}
           >
-            Logout
+           <strong style={{fontSize:15,color:'red'}}> Logout</strong>
           </button>
           <button
             className="m-3 btn btn-sm btn-success"
             style={{
               display:'flex',
               justifyContent:'flex-end',
-              float:'right'
+              float:'right',
+              borderWidth:2,
+              borderColor:'black',
+              alignItems:'center',
+              justifyContent:'center',
+              // borderBlockColor:'black',
+              backgroundColor:'white',
+              borderRadius:100,
             }}
             onClick={this.addLegalAid}
           >
-            Add Legal Aid
+           <strong style={{color:'black', fontSize:15}}>+ Add</strong>
+           
           </button>
           </div>
           </div>
@@ -424,9 +434,10 @@ export default class Admin extends Component {
             {}
             {tutorials &&
               tutorials.map((tutorial, index) => (
+               
                 <li
                   className={
-                    "list-group-item " +
+                    "list-group-item col-sm " +
                     (index === currentIndex ? "active" : "")
                   }
                   onClick={() => this.setActiveTutorial(tutorial, index)}
@@ -437,10 +448,11 @@ export default class Admin extends Component {
     shadowOffset: {width: 0, height: 2},
     shadowRadius: 6,
     shadowOpacity: 0.26,
-    elevation: 8,
+    elevation: 12,
     // backgroundColor: '#000080',
     padding: 20,
     borderRadius: 10,
+    borderBlockColor:'black',
     // width: 155,
     // height: 120,
     alignItems:'flex-start',
@@ -450,7 +462,8 @@ export default class Admin extends Component {
                   }}
 
                 >
-                <div>
+                <div >
+                 
                 <p><strong> Name:</strong>   {tutorial.Name}</p>  
                 <p><strong>Address:</strong>   {tutorial.Address}</p>  
                 <p><strong>District:</strong>   {tutorial.District}</p>  
@@ -460,17 +473,22 @@ export default class Admin extends Component {
                 </div>
                   
                 </li>
+
               ))}
               
          
           </ul>
 
           <button
-            className="m-3 btn btn-sm btn-danger"
+            className="m-3 btn btn-sm btn-link"
             onClick={this.removeAllTutorials}
+            // style={{color:'black'}}
           >
-            Remove All
+           <strong style={{fontSize:15,color:'red'}}> Remove All</strong>
           </button>
+        </div>
+        <div className="col-md-2">
+        
         </div>
         <div className="col-md-5">
           {currentTutorial ? (
@@ -485,9 +503,7 @@ export default class Admin extends Component {
             </div>
           )}
         </div>
-        <div className="col-md-2">
-        
-        </div>
+      
       </div>
       </div>
     );
